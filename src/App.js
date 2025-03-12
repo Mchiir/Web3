@@ -4,9 +4,8 @@ import contractArtifact from './abis/NameStorage.json';  // Path to your compile
 import "./App.css"
 
 // Set up the web3 instance and contract address
-const web3 = new Web3(Web3.givenProvider || process.env.GANACHE_CLI_URI); // Connect to Ganache
-const contractAddress = process.env.CONTRACT_ADDRESS; // Replace with your contract address
-
+const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:8545"); // Connect to Ganache-CLI
+const contractAddress = "0xfDd8da5C029fF561954BD3e75ddb2241842f4992"
 console.log("address:", contractAddress)
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
   // Fetch the contract and the user's MetaMask account
   useEffect(() => {
     const loadWeb3 = async () => {
-      if (window.ethereum) {
+      if (window.ethereum) {  
         await window.ethereum.request({ method: 'eth_requestAccounts' }); // Request MetaMask access
         const accounts = await web3.eth.getAccounts();
         setAccount(accounts[0]);
