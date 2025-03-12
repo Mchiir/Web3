@@ -4,6 +4,7 @@ NameStorage.txt
 abis
 *.yaml
 package-lock.json
+*.env
 
 
 /.pnp

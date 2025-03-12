@@ -4,8 +4,10 @@ import contractArtifact from './abis/NameStorage.json';  // Path to your compile
 import "./App.css"
 
 // Set up the web3 instance and contract address
-const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:8545"); // Connect to Ganache
-const contractAddress = "0x58f2E30eE1ec8776f76Ff2DB7DFd028958AE6fa5"; // Replace with your contract address
+const web3 = new Web3(Web3.givenProvider || process.env.GANACHE_CLI_URI); // Connect to Ganache
+const contractAddress = process.env.CONTRACT_ADDRESS; // Replace with your contract address
+
+console.log("address:", contractAddress)
 
 function App() {
   const [name, setName] = useState('');
