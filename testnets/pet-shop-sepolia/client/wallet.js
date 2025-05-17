@@ -4,8 +4,8 @@ let accounts = [];
 async function connectWallet() {
   try {
     if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
       accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      web3 = new Web3(window.ethereum);
       return true;
     } else {
       alert('Please install MetaMask!');

@@ -48,18 +48,36 @@ function updateWalletUI(account) {
 }
 
 function updateAdoptionStatus(adopters, dogs) {
+  const currentAccount = getCurrentAccount().toLowerCase();
+  
   dogs.forEach((dog, index) => {
     const adopterElement = $(`#adopter-${index}`);
+    const adoptBtn = $(`.adopt-btn[data-index="${index}"]`);
+    const unadoptBtn = $(`.unadopt-btn[data-index="${index}"]`);
+    
     if (adopters[index] !== '0x0000000000000000000000000000000000000000') {
       const shortAddress = `${adopters[index].substring(0, 6)}...${adopters[index].substring(38)}`;
       adopterElement.html(`<small class="text-muted">Adopted by: ${shortAddress}</small>`);
       
-      $(`.adopt-btn[data-index="${index}"]`).prop(
-        'disabled', 
-        adopters[index].toLowerCase() === getCurrentAccount().toLowerCase()
-      );
+      // Disabling adopt button if pet is adopted
+      adoptBtn.prop('disabled', true);
+      
+      // Enabling unadopt only if current user is the adopter
+      const isAdopter = adopters[index].toLowerCase() === currentAccount;
+      unadoptBtn.prop('disabled', !isAdopter);
+      
+      // Visual feedback
+      if (isAdopter) {
+        adoptBtn.parent().find('.btn').addClass('disabled');
+        unadoptBtn.removeClass('disabled');
+      }
     } else {
       adopterElement.empty();
+      adoptBtn.prop('disabled', false);
+      unadoptBtn.prop('disabled', true);
+      
+      // Reseting visual state
+      adoptBtn.parent().find('.btn').removeClass('disabled');
     }
   });
 }

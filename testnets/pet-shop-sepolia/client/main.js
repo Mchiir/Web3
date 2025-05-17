@@ -1,18 +1,22 @@
+import { showLoader, hideLoader } from './loader.js';
+import { adoptPet, getAdopters, initContract, unadoptPet } from './contract.js';
+
 let dogs = [];
+const viewBtn = $(".view-btn").removeClass('disabled');
 
 async function initApp() {
-  // Initialize data
+  // Initializing data
   dogs = generateDogs();
   renderDogs(dogs);
   
-  // Setup event listeners
+  // event listeners
   $('#connectWallet').click(handleWalletConnection);
   $('#dogs-container')
     .on('click', '.adopt-btn', handleAdoption)
     .on('click', '.unadopt-btn', handleUnadoption)
     .on('click', '.view-btn', handleViewDog);
   
-  // Check existing connection
+  // existing connection checkup
   if (await checkWalletConnection()) {
     await completeWalletConnection();
   }
@@ -31,26 +35,70 @@ async function completeWalletConnection() {
 }
 
 async function handleAdoption(e) {
-  const index = $(e.target).data('index');
+  const button = $(e.target);
+  const index = button.data('index');
+  
   try {
+    // Disabling all buttons during transaction
+    button.addClass('btn-disabled');
+    button.siblings().addClass('btn-disabled');
+    showLoader('Adopting pet...');
+    
     await adoptPet(index);
     await updateAdoptionDisplay();
+    
+    // Showing success feedback
+    button.closest('.card').addClass('border-success');
+    setTimeout(() => button.closest('.card').removeClass('border-success'), 2000);
+    
     alert(`Successfully adopted ${dogs[index].name}!`);
   } catch (error) {
     console.error("Adoption error:", error);
-    alert('Adoption failed. See console for details.');
+    alert(`Adoption failed.`);
+  } finally {
+    hideLoader();
+    // re-enabling button if still applicable
+    const adopters = await getAdopters();
+    if (adopters[index] === '0x0000000000000000000000000000000000000000') {
+      button.removeClass('btn-disabled');
+      button.siblings().removeClass('btn-disabled');
+    }
+
+    window.location.reload() // reloading to update ui
   }
 }
 
 async function handleUnadoption(e) {
-  const index = $(e.target).data('index');
+  const button = $(e.target);
+  const index = button.data('index');
+  
   try {
+    // Disabling all buttons during transaction
+    button.addClass('btn-disabled');
+    button.siblings().addClass('btn-disabled');
+    showLoader('Unadopting pet...');
+    
     await unadoptPet(index);
     await updateAdoptionDisplay();
+    
+    // showing success feedback
+    button.closest('.card').addClass('border-primary');
+    setTimeout(() => button.closest('.card').removeClass('border-primary'), 2000);
+    
     alert(`Successfully unadopted ${dogs[index].name}.`);
   } catch (error) {
     console.error("Unadoption error:", error);
-    alert('Unadoption failed. See console for details.');
+    alert(`Unadoption failed.`);
+  } finally {
+    hideLoader();
+    // re-enabling a button if still applicable
+    const adopters = await getAdopters();
+    if (adopters[index] !== '0x0000000000000000000000000000000000000000') {
+      button.removeClass('btn-disabled');
+      button.siblings().removeClass('btn-disabled');
+    }
+
+    window.location.reload() // reloading to update ui
   }
 }
 
@@ -68,5 +116,5 @@ async function updateAdoptionDisplay() {
   }
 }
 
-// Initialize the app when DOM is ready
+// Initializing the app when the DOM is ready
 $(document).ready(initApp);
