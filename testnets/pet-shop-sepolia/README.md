@@ -1,4 +1,4 @@
-# Pet-Shop Adoption (Ethereum Sepolia)
+# Pet-Shop Adoption (Ethereum Sepolia) [Live site at github pages](https://mchiir.github.io/Web3)
 
 This project marks my first smart contract deployment, tracking pet adoptions on the Sepolia Ethereum testnet.
 
