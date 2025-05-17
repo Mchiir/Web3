@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3</title>
+</head>
+<body>
+    <h1 style="font-size: 3rem; text-align: center; color: rgb(146, 146, 148);">
+        Welcome to Web3.js!!!
+    </h1>
+
+    <main style="display: flex; flex-direction: column; align-items: center;">
+        <div style="margin-bottom: 20px;">
+            <button onclick="connectWallet()">Connect MetaMask</button>
+        </div>
+    
+        <div>
+            <button onclick="handleNetworkSwitch()">Switch Network</button>
+            <input type="text" id="chainIdInput" placeholder="Chain ID (Hex e.g. 0xaa36a7)" style="margin: 5px;">
+        
+            <div style="display: flex; flex-direction: column; font-size: 1rem; margin-top: 20px;">
+                <p><strong>Selected Network:</strong> <span id="selectedNetwork">-</span></p>
+                <p><strong>Wallet Address:</strong> <span id="walletAddress">-</span></p>
+                <p><strong>Balance:</strong> <span id="walletBalance">-</span></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.0.3/web3.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

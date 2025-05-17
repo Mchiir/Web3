@@ -1,0 +1,55 @@
+body {
+    background: linear-gradient(135deg, #c8d6e5, #8395a7, #576574);
+    min-height: 100vh;
+    color: #2d3436;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #f8f9fa, #e0e0e0);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.btn-success {
+    background-color: #55efc4;
+    border-color: #55efc4;
+    color: #2d3436;
+}
+
+.btn-danger {
+    background-color: #fab1a0;
+    border-color: #fab1a0;
+    color: #2d3436;
+}
+
+.btn-info {
+    background-color: #81ecec;
+    border-color: #81ecec;
+    color: #2d3436;
+}
+
+.modal-content {
+    background: #dfe6e9;
+    border-radius: 10px;
+}
+
+.modal-title {
+    color: #2d3436;
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}

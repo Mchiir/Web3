@@ -1,0 +1,22 @@
+
+npx ganache-cli
+
+npx truffle console
+
+truffle compile
+truffle migrate
+truffle migrate --reset
+
+const instance = await ContractName.deploy();
+instance.getName();
+instance.setName("asdf");
+instance.getName();
+
+Dependencies:
+web3
+truffle
+
+cra-template
+react
+react-dom
+react-scripts
