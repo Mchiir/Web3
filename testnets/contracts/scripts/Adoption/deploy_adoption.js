@@ -4,7 +4,7 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const Adoption = await hre.ethers.getContractFactory("Adoption");
+  const Adoption = await hre.ethers.getContractFactory("Adoption"); // contract/class name
   const adoption = await Adoption.deploy();
 
   await adoption.waitForDeployment();
