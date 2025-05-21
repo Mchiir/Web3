@@ -33,11 +33,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload testnets/pet-shop-sepolia/client folder
+      - name: Upload testnets/pet_shop_sepolia/src folder
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: 'testnets/pet-shop-sepolia/client'
+          path: 'testnets/pet_shop_sepolia/src'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
