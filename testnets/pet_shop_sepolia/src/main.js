@@ -32,14 +32,14 @@ async function completeWalletConnection() {
 }
 
 async function handleAdoption(e) {
+  
   const button = $(e.target);
   const index = button.data('index');
-  
   try {
-    
+    window.loader.showLoader("Adopting pet...")
+
     await adoptPet(index);
     await updateAdoptionDisplay();
-    window.loader.showLoader("Adopting pet...")
     
     // Showing success feedback
     button.closest('.card').addClass('border-success');
@@ -68,9 +68,10 @@ async function handleUnadoption(e) {
   const index = button.data('index');
   
   try {
+    window.loader.showLoader('Unadopting pet...');
+
     // Disabling all buttons during transaction
     disableAllBtns()
-    window.loader.showLoader('Unadopting pet...');
     
     await unadoptPet(index);
     await updateAdoptionDisplay();
