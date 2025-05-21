@@ -39,6 +39,7 @@ async function handleAdoption(e) {
     
     await adoptPet(index);
     await updateAdoptionDisplay();
+    window.loader.showLoader("Adopting pet...")
     
     // Showing success feedback
     button.closest('.card').addClass('border-success');
@@ -50,7 +51,7 @@ async function handleAdoption(e) {
     alert(`Adoption failed. make sure you connected your wallet`);
     window.location.reload() // reloading to update ui
   } finally {
-    hideLoader();
+    window.loader.hideLoader();
     // re-enabling button if still applicable
     const adopters = await getAdopters();
     if (adopters[index] === '0x0000000000000000000000000000000000000000') {
@@ -69,7 +70,7 @@ async function handleUnadoption(e) {
   try {
     // Disabling all buttons during transaction
     disableAllBtns()
-    showLoader('Unadopting pet...');
+    window.loader.showLoader('Unadopting pet...');
     
     await unadoptPet(index);
     await updateAdoptionDisplay();
@@ -84,7 +85,7 @@ async function handleUnadoption(e) {
     alert(`Unadoption failed. make sure you connected your wallet`);
     window.location.reload()
   } finally {
-    hideLoader();
+    window.loader.hideLoader();
     // re-enabling a button if still applicable
     enableUnadoptedBtns()
 
