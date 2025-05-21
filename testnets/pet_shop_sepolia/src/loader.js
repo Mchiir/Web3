@@ -25,5 +25,3 @@ function updateLoaderText(text) {
 
 // Adding loader to window for easy debugging
 window.loader = { showLoader, hideLoader, updateLoaderText };
-
-export { showLoader, hideLoader, updateLoaderText };

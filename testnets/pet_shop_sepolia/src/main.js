@@ -1,6 +1,3 @@
-import { showLoader, hideLoader } from './loader.js';
-import { adoptPet, getAdopters, initContract, unadoptPet } from './contract.js';
-
 let dogs = [];
 const viewBtn = $(".view-btn").removeClass('disabled');
 
@@ -39,10 +36,6 @@ async function handleAdoption(e) {
   const index = button.data('index');
   
   try {
-    // Disabling all buttons during transaction
-    button.addClass('btn-disabled');
-    button.siblings().addClass('btn-disabled');
-    showLoader('Adopting pet...');
     
     await adoptPet(index);
     await updateAdoptionDisplay();
@@ -54,7 +47,8 @@ async function handleAdoption(e) {
     alert(`Successfully adopted ${dogs[index].name}!`);
   } catch (error) {
     console.error("Adoption error:", error);
-    alert(`Adoption failed.`);
+    alert(`Adoption failed. make sure you connected your wallet`);
+    window.location.reload() // reloading to update ui
   } finally {
     hideLoader();
     // re-enabling button if still applicable
@@ -74,8 +68,7 @@ async function handleUnadoption(e) {
   
   try {
     // Disabling all buttons during transaction
-    button.addClass('btn-disabled');
-    button.siblings().addClass('btn-disabled');
+    disableAllBtns()
     showLoader('Unadopting pet...');
     
     await unadoptPet(index);
@@ -88,15 +81,12 @@ async function handleUnadoption(e) {
     alert(`Successfully unadopted ${dogs[index].name}.`);
   } catch (error) {
     console.error("Unadoption error:", error);
-    alert(`Unadoption failed.`);
+    alert(`Unadoption failed. make sure you connected your wallet`);
+    window.location.reload()
   } finally {
     hideLoader();
     // re-enabling a button if still applicable
-    const adopters = await getAdopters();
-    if (adopters[index] !== '0x0000000000000000000000000000000000000000') {
-      button.removeClass('btn-disabled');
-      button.siblings().removeClass('btn-disabled');
-    }
+    enableUnadoptedBtns()
 
     window.location.reload() // reloading to update ui
   }

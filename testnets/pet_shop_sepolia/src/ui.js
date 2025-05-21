@@ -54,10 +54,16 @@ function updateAdoptionStatus(adopters, dogs) {
     const adopterElement = $(`#adopter-${index}`);
     const adoptBtn = $(`.adopt-btn[data-index="${index}"]`);
     const unadoptBtn = $(`.unadopt-btn[data-index="${index}"]`);
-    
-    if (adopters[index] !== '0x0000000000000000000000000000000000000000') {
+
+    const isAdopted = adopters[index] !== '0x0000000000000000000000000000000000000000'
+
+    if (isAdopted) {
       const shortAddress = `${adopters[index].substring(0, 6)}...${adopters[index].substring(38)}`;
-      adopterElement.html(`<small class="text-muted">Adopted by: ${shortAddress}</small>`);
+      adopterElement.html(`
+        <span class="badge bg-success">Adopted</span>
+        <br>
+        <small class="text-muted">Adopted by: ${shortAddress}</small>
+      `);
       
       // Disabling adopt button if pet is adopted
       adoptBtn.prop('disabled', true);
@@ -72,7 +78,8 @@ function updateAdoptionStatus(adopters, dogs) {
         unadoptBtn.removeClass('disabled');
       }
     } else {
-      adopterElement.empty();
+      // adopterElement.empty();
+      adopterElement.html(`<span class="badge bg-secondary">Available</span>`);
       adoptBtn.prop('disabled', false);
       unadoptBtn.prop('disabled', true);
       
@@ -92,4 +99,18 @@ function generateDogs() {
     image: `https://placedog.net/500/400?id=${i + 1}`,
     description: `Meet ${name}, a lovable dog from ${origins[i % origins.length]}. Full of energy and joy.`
   }));
+}
+
+function disableAllBtns(){
+    button.addClass('btn-disabled');
+    button.siblings().addClass('btn-disabled');
+    showLoader('Adopting pet...');
+}
+
+async function enableUnadoptedBtns(){
+    const adopters = await getAdopters();
+    if (adopters[index] === '0x0000000000000000000000000000000000000000') {
+      button.removeClass('btn-disabled');
+      button.siblings().removeClass('btn-disabled');
+    }
 }

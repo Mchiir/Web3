@@ -1,5 +1,3 @@
-import { updateLoaderText } from './loader.js';
-
 let contract;
 
 function initContract() {
@@ -62,5 +60,3 @@ async function waitForTransactionCompletion(txHash) {
     }, 1000);
   });
 }
-
-export { initContract, adoptPet, unadoptPet, getAdopters, waitForTransactionCompletion }
