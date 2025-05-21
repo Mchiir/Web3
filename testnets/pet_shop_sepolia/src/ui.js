@@ -100,17 +100,3 @@ function generateDogs() {
     description: `Meet ${name}, a lovable dog from ${origins[i % origins.length]}. Full of energy and joy.`
   }));
 }
-
-function disableAllBtns(){
-    button.addClass('btn-disabled');
-    button.siblings().addClass('btn-disabled');
-    showLoader('Adopting pet...');
-}
-
-async function enableUnadoptedBtns(){
-    const adopters = await getAdopters();
-    if (adopters[index] === '0x0000000000000000000000000000000000000000') {
-      button.removeClass('btn-disabled');
-      button.siblings().removeClass('btn-disabled');
-    }
-}

@@ -24,13 +24,22 @@ async function adoptPet(petId) {
 
 async function unadoptPet(petId) {
   const account = getCurrentAccount();
-  updateLoaderText('Waiting for your confirmation...');
-  const tx = await contract.methods.unadopt(petId).send({ from: account });
-  
-  updateLoaderText('Transaction confirmed. Waiting for block...');
-  await waitForTransactionCompletion(tx.transactionHash);
-  
-  return tx;
+  // console.log("Account unadopting", account);
+
+  try {
+    updateLoaderText('Waiting for your confirmation...');
+    const tx = await contract.methods.unadopt(petId).send({ from: account });
+    
+    updateLoaderText('Transaction confirmed. Waiting for block...');
+    await waitForTransactionCompletion(tx.transactionHash);
+    
+    return tx;
+  } catch (error) {
+    console.error("Unadoption error:", error);
+    updateLoaderText('Transaction failed. Please try again.');
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    throw error;
+  }
 }
 
 async function getAdopters() {

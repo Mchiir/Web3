@@ -40,13 +40,6 @@ h1 {
     color: #2d3436;
 }
 
-/* Disable buttons during transactions */
-.btn-disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
 .modal-content {
     background: #dfe6e9;
     border-radius: 10px;
