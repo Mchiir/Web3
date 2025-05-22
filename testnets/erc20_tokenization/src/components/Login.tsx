@@ -1,9 +1,11 @@
 import { ethers } from "ethers"
 import { useNavigate } from "react-router-dom"
-import useStorage from "../hooks/useStorage.tsx"
+import { UserContext } from "../context/UserContext"
+import { useContext } from "react"
 
-const Login = () => {
-    const { setAddress } = useStorage()
+const Login: React.FC = () => {
+    const { setAddress } = useContext(UserContext)
+
     const navigate = useNavigate()
 
     const initializeProvider = async () => {
@@ -16,26 +18,27 @@ const Login = () => {
         } else{
             provider = new ethers.BrowserProvider((window as any).ethereum)
             signer = await provider.getSigner()
-            setAddress(signer.address)
-            navigate("/generate-link")
+
+            const address = await signer.getAddress()
+            setAddress(address)
+
+            navigate("/home")
         }
     }
 
     return (
         <div>
-            <div className="flex flex-col items-center">
-                <h2 className="text-4xl m-4 font-bol text-white">CryptoBrew - DApp</h2>
+            <div className="flex flex-col items-center bg-gray-400 h-screen">
+                <h2 className="text-4xl m-4 font-bol text-white">ERC20 tokens Dapp</h2>
 
-                <p className="text-white text-justify my-4">
-                    CryptoBrew is a decentralized application (dApp) built using Web3
-                    concepts, enabling users to support creators with simple payments. By using Ethereum smart contracts, 
-                    CafeBrew allows creators to generate a unique payment link, making it easy for supporters to send secure and transparent 
-                    microtransactions directly to the creator’s wallet.
+                <p className="text-white text-justify m-4">
+                    A web3 application to manage user's fungible tokens,
+                    exchange/swap tokens and view tokens balances
                 </p>
 
                 <button type="button" onClick={initializeProvider}
-                    className="w-full py-3 bg-[#EED8BF] text-black font-semibold rounded-md cursor-pointer focus:outline-none">
-                        Connect Your Wallet
+                    className="text-white font-semibold rounded-md cursor-pointer p-3 bg-gray-500 hover:bg-gray-600 transition duration-300">
+                        Connect Your Wallet, and start journey
                 </button>
             </div>
         </div>

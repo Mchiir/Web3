@@ -1,4 +1,4 @@
-const GenerateLink = () => {
+const GenerateLink: React.FC = () => {
    return (
         <div>
             
