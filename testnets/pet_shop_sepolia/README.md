@@ -30,10 +30,16 @@ npx hardhat run scripts/deploy.js --network sepolia
 
 ## Resources Used
 
-- Sepolia Faucet
+- [Sepolia google Faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) for getting sepolia testnet tokens
 
-- Sepolia Etherscan
+- [Sepolia chainLink Faucet](https://faucets.chain.link/sepolia) for getting sepolia testnet tokens
 
-- Infura (MetaMask)
+- [Sepolia Etherscan](https://sepolia.etherscan.io/) for tracking deployed smart contracts on sepolia testnet using contract address
 
-- Opcito Deployment Guide
+- [Infura (MetaMask)](https://developer.metamask.io/) For getting project id and deploying contracts on sepolia testnet
+
+- [Opcito hardhat smart contract Deployment Guide](https://www.opcito.com/blogs/a-step-by-step-guide-for-smart-contract-deployment-using-hardhat)
+
+- ToastrJS for non-blocking notifications
+
+- [Toastr for notification demo](https://codeseven.github.io/toastr/demo.html)
