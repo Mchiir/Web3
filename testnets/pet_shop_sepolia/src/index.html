@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="./styles.css">
 
+  <!-- Toastr CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
   <!-- Contract Configuration -->
   <script src="./config.js"></script>
 </head>
@@ -57,7 +60,19 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
   
   <!-- App Scripts -->
-  <script>alert("Please make sure to connect your wallet before any transaction!")</script>
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <!-- Toastr configurations -->
+  <script>
+    toastr.options = {
+      "closeButton": true,
+      "positionClass": "toast-bottom-right",
+      "timeOut": "4000"
+    };
+  </script>
+  
+  <script>toastr.info("Please make sure to connect your wallet before any transaction!")</script>
+  
   <script src="./loader.js"></script>
   <script src="./wallet.js"></script>
   <script src="./contract.js"></script>

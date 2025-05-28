@@ -1,7 +1,23 @@
 let dogs = [];
 const viewBtn = $(".view-btn").removeClass('disabled');
 
+let listenersAdded = false;
+
 async function initApp() {
+  if (window.ethereum && !listenersAdded) {
+    window.ethereum.on('chainChanged', (_chainId) => {
+      toastr.info("Network changed. Reloading...");
+      window.location.reload();
+    });
+
+    window.ethereum.on('accountsChanged', () => {
+      toastr.info("Wallet account changed. Reloading...");
+      window.location.reload();
+    });
+
+    listenersAdded = true;
+  }
+
   // Initializing data
   dogs = generateDogs();
   renderDogs(dogs);
@@ -26,8 +42,15 @@ async function handleWalletConnection() {
 }
 
 async function completeWalletConnection() {
+  const isCorrectNet = await checkCorrectNetwork();
+  if (!isCorrectNet) return;
+
+  const account = getCurrentAccount();
+  const hasEnoughEth = await checkEthBalance(account);
+  if (!hasEnoughEth) return;
+
   initContract();
-  updateWalletUI(getCurrentAccount());
+  updateWalletUI(account);
   await updateAdoptionDisplay();
 }
 
@@ -51,10 +74,10 @@ async function handleAdoption(e) {
     button.closest('.card').addClass('border-success');
     setTimeout(() => button.closest('.card').removeClass('border-success'), 2000);
 
-    alert(`Successfully adopted ${dogs[index].name}!`);
+    toastr.success(`Successfully adopted ${dogs[index].name}!`);
   } catch (error) {
     console.error("Adoption error:", error);
-    alert(`Adoption failed. make sure you connected your wallet`);
+    toastr.error(`Adoption failed. make sure you connected your wallet`);
     // alert(`Adoption failed.`, error);
 
     window.location.reload();
@@ -94,10 +117,10 @@ async function handleUnadoption(e) {
     button.closest('.card').addClass('border-primary');
     setTimeout(() => button.closest('.card').removeClass('border-primary'), 2000);
 
-    alert(`Successfully unadopted ${dogs[index].name}.`);
+    toastr.success(`Successfully unadopted ${dogs[index].name}.`);
   } catch (error) {
     console.error("Unadoption error:", error);
-    alert(`Unadoption failed. make sure you connected your wallet`);
+    toastr.error(`Unadoption failed. make sure you connected your wallet`);
     // alert(`Unadoption failed.`, error);
 
     window.location.reload();
