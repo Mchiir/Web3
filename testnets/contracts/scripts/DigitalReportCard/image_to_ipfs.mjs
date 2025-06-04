@@ -1,52 +1,51 @@
-import { NFTStorage, File } from 'nft.storage';
-import mime from 'mime';
-import fs from 'fs';
-import path from 'path';
-import dotenv from 'dotenv';
-dotenv.config();
+import { NFTStorage, File } from "nft.storage"
+import mime from "mime"
+import fs from "fs"
+import path from "path"
+import 'dotenv/config'
 
-const NFT_STORAGE_KEY = process.env.NFT_STORAGE_API_KEY;
+const NFT_STORAGE_KEY = process.env.NFT_STORAGE_API_KEY
 
+/**
+ * Reads an image file from `imagePath` and stores an NFT with the given name and description.
+ * @param {string} imagePath the path to an image file
+ * @param {string} name a name for the NFT
+ * @param {string} description a text description for the NFT
+ */
 async function storeNFTs(imagesPath) {
-  const fullImagesPath = path.resolve(imagesPath);
-  const files = fs.readdirSync(fullImagesPath).filter(file =>
-    /\.(png|jpg|jpeg)$/i.test(file)
-  );
+    const fullImagesPath = path.resolve(imagesPath)
+    const files = fs.readdirSync(fullImagesPath)
+    let responses = []
+    for (const file of files) {
+        const image = await fileFromPath(`${fullImagesPath}/${file}`)
+        const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY });
+        const dogName = file.replace(".png", "");
+        const response = await nftstorage.store({
+            image,
+            name: dogName,
+            description: `An adorable ${dogName}`,
+        });
+        responses.push(response);
+    }
 
-  let responses = [];
-
-  for (const fileName of files) {
-    const image = await fileFromPath(`${fullImagesPath}/${fileName}`);
-    const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY });
-    const name = fileName.replace(path.extname(fileName), "");
-    const response = await nftstorage.store({
-      image,
-      name,
-      description: `An adorable ${name}`,
-    });
-    responses.push(response);
-  }
-
-  return responses;
+    //return responses;
 }
 
+/**
+ * A helper to read a file from a location on disk and return a File object.
+ * Note that this reads the entire file into memory and should not be used for
+ * very large files.
+ * @param {string} filePath the path to a file to store
+ * @returns {File} a File object containing the file content
+ */
 async function fileFromPath(filePath) {
-  const content = await fs.promises.readFile(filePath);
-  const type = mime.getType(filePath);
-  return new File([content], path.basename(filePath), { type });
+    const content = await fs.promises.readFile(filePath)
+    const type = mime.getType(filePath)
+    return new File([content], path.basename(filePath), { type })
 }
 
-const imagesFolderPath = './';
-
-storeNFTs(imagesFolderPath)
-  .then((responses) => {
-    console.log("\Uploaded Files:");
-    responses.forEach((res, i) => {
-      console.log(`Image ${i + 1}:`);
-      console.log(`- Metadata URL: https://ipfs.io/ipfs/${res.ipnft}/metadata.json`);
-      console.log(`- Image URL: ${res.data.image.href}`);
-    });
-  })
-  .catch((err) => {
-    console.error("Upload failed:", err);
-  });
+try{
+    storeNFTs('./scripts/DigitalReportCard/images')
+} catch (err){
+    console.err("Error with uploading image:", err)
+}
