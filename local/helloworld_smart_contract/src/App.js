@@ -5,13 +5,13 @@ import "./App.css"
 
 // Set up the web3 instance and contract address
 const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:8545"); // Connect to Ganache-CLI
-const contractAddress = "0x31259B9dF9e7dD7714de8ae43BA00B08d273B2cd"
-console.log("address:", contractAddress)
 
 function App() {
   const [name, setName] = useState('');
   const [storedName, setStoredName] = useState('');
+  const [message, setMessage] = useState('');
   const [contract, setContract] = useState(null);
+  const [contractAddress, setContractAddress] = useState('');
   const [account, setAccount] = useState('');
 
   // Fetch the contract and the user's MetaMask account
@@ -27,8 +27,21 @@ function App() {
     };
 
     const loadContract = async () => {
-      const contract = new web3.eth.Contract(contractArtifact.abi, contractAddress);
-      setContract(contract);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = contractArtifact.networks[networkId];
+      if (!deployedNetwork) {
+        alert(`Smart contract not deployed to detected network (network ID: ${networkId}).`);
+        return;
+      }
+
+      const address = deployedNetwork.address;
+      setContractAddress(address);
+
+      const instance = new web3.eth.Contract(contractArtifact.abi, address);
+      setContract(instance);
+
+      console.log("Contract instance:", instance);
+      console.log("Contract address:", address);
     };
 
     loadWeb3();
@@ -37,6 +50,9 @@ function App() {
 
   // Function to set the name in the contract
   const setNameInContract = async () => {
+    setMessage('');
+    setStoredName('');
+
     if (contract) {
       await contract.methods.setName(name).send({
         from: account,
@@ -44,12 +60,13 @@ function App() {
         gasPrice: web3.utils.toWei('20', 'gwei'),  // Set the gas price manually
       });
 
-      getStoredName(); // Update the displayed stored name after setting it
+      setMessage(`Name set in blockchain`);
     }
   };
 
   // Function to get the stored name from the contract
   const getStoredName = async () => {
+    setMessage('');
     if (contract) {
       const result = await contract.methods.getName().call();
       setStoredName(result);
@@ -58,7 +75,8 @@ function App() {
 
   return (
     <div>
-      <h1>Interacting with Smart Contract</h1>
+      <h1>Hello World and Name <br/>Dapp</h1>
+      {message ? <span>{message}</span> : null}
       <div>
         <input
           type="text"
@@ -69,7 +87,8 @@ function App() {
         <button onClick={setNameInContract}>Set Name</button>
       </div>
       <div>
-        <h2>Stored Name: {storedName ? storedName : "No name set yet"}</h2>
+        <button onClick={() => getStoredName()}>Get Name</button>
+        {storedName ? <h2>Stored Name: { storedName }</h2>: null}
       </div>
     </div>
   );

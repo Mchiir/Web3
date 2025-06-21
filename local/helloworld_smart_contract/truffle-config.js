@@ -11,5 +11,6 @@ module.exports = {
     solc: {
       version: "0.5.1",       // Match your Solidity version
     }
-  }
+  },
+  contracts_build_directory: "./src/abis", // Directory for compiled contracts
 }
