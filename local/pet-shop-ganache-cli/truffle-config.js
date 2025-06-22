@@ -2,7 +2,7 @@ module.exports = {
   networks: {
     development: {
       host: "127.0.0.1",     // Localhost
-      port: 8545,            // Ganache or local blockchain port
+      port: 7545,            // Ganache or local blockchain port
       network_id: "*",       // Match any network id
     },
   },
@@ -11,5 +11,6 @@ module.exports = {
     solc: {
       version: "0.5.1",       // Match your Solidity version
     }
-  }
+  },
+  contracts_build_directory: "./src", // Directory for compiled contracts
 };
