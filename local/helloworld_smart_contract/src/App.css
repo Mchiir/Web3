@@ -49,6 +49,18 @@ button {
   margin-top: 10px;
 }
 
+.connect_button {
+  background-color: #586068;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
 button:hover {
   background-color: #0056b3;
 }
