@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
+pragma solidity >=0.4.22 <0.9.0;
 
 
 contract Calculator {
     string public message;
 
-    constructor() {
+    constructor() public {
         message = "Hello blockchain";
     }
 
